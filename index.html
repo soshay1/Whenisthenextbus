@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-P839JRL');</script>
+    <!-- End Google Tag Manager -->
+    <title>The next OCCT bus</title>
+    <link rel="shortcut icon" type="image/png" href="bus.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+        p {
+
+            text-align: center;
+            font-size: 30px;
+            margin-top: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 30px;
+
+
+        }
+        .paragraphs{
+            display:inline-block;
+            width:100%;
+            left: 50%;
+            -ms-transform: translate(-50%, 0);
+            transform: translate(-50%, 0);
+            position: fixed;
+        }
+        .center {
+
+            margin: 0;
+            /*display: inline-table;*/
+            position: fixed;
+            left: 50%;
+            -ms-transform: translate(-50%, 0);
+            transform: translate(-50%, 0);
+        }
+        label {
+            margin-right: 5px;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: small;
+        }
+        a {
+            text-decoration:none;
+            color:#FFF;
+        }
+        .rainbow-button {
+            width:max(calc(25vw + 6px),206px);
+            height:calc(18vh + 6px);
+            margin: 0 auto;
+            background-image: linear-gradient(45deg, #00C0FF 0%, #FFCF00 49%, #FC4F4F 80%, #00C0FF 100%);
+            border-radius:5px;
+            display:flex;
+            font-size: clamp(25px, 3.5vw, 30px); /*confusing, try to fix this later if you want*/
+            font-weight:bold;
+            align-items:center;
+            justify-content:center;
+            text-align: center;
+            font-family: Arial,Helvetica, Sans-serif, serif;
+        }
+        .rainbow-button:after {
+            content:attr(title);
+            width:max(calc(25vw),200px);
+            height:18vh;
+            background-color:#191919;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            margin: 0 auto;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-flex;
+            font-size: 16px;
+        }
+        #about_button{
+            display:inline-block;
+            width:max(calc(1vw),60px);
+            height:max(calc(1vw),60px);
+        }
+        #abt_btn{
+            width:min(calc(7vw),60px);
+            height:min(calc(7vw),60px);
+            margin: 0;
+            display:inline-flex;
+        }
+        .rest_of_app{
+            margin: 0;
+            display: inline-flex;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P839JRL"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div id="about_button">
+    <a href="about.html">
+        <img id="abt_btn" src="about.png" alt="About">
+    </a>
+</div>
+<div class="rest_of_app">
+    <div class="center">
+        <div style="" id="beginning">
+            <p id="choose_one_text">Choose one</p>
+            <a href="#" class="rainbow-button" id="begbutton1" onclick="ChooseLine('in')" title="Going to campus"></a>
+            <a href="#" class="rainbow-button" id="begbutton2" onclick="ChooseLine('out')" title="Leaving campus"></a>
+        </div>
+        <div style="" id="choose_line">
+            <p id="choose_line_text">Choose a line</p>
+            <a href="#" class="rainbow-button" id="linebutton1" onclick="ChooseStop('DCL')" title="DCL"></a>
+            <a href="#" class="rainbow-button" id="linebutton2" onclick="ChooseStop('WS')" title="WS"></a>
+            <a href="#" class="rainbow-button" id="linebutton3" onclick="ChooseStop('LRS')" title="LRS"></a>
+            <a href="#" class="rainbow-button" id="linebutton4" onclick="Start('UDC')" title="UDC"></a> <!--UDC has no stops-->
+        </div>
+    <div style="" id="choose_stop">
+        <p id="choose_stop_text">Choose a stop</p>
+            <a href="#" class="rainbow-button" id="stopbutton1" onclick="Start('0')" title="DCL"></a>
+            <a href="#" class="rainbow-button" id="stopbutton2" onclick="Start('1')" title="WS"></a>
+            <a href="#" class="rainbow-button" id="stopbutton3" onclick="Start('2')" title="LRS"></a>
+        </div>
+    </div>
+    <div class="paragraphs" style="text-align: center" id="timing">
+        <u><p id="desc_choice"></p></u>
+        <p id="notif_one"></p>
+        <p id="time_one" style="font-size: min(calc(9vw),60px); margin-bottom: 30px;"></p>
+        <p id="in_minutes" style="line-height: 5px; margin-top: 0;"></p>
+        <p id="notif_two"></p>
+        <p id="time_two" style="font-size: min(calc(8vw),50px)"></p>
+        <p id="good_night"></p>
+        <button class="button" onclick="Beginning()" id="back_from_timing">Back</button>
+    </div>
+</div>
+
+
+
+
+</body>
+<script>
+   document.getElementById("choose_line").style.display="none";
+   document.getElementById("choose_stop").style.display="none";
+   document.getElementById("timing").style.display="none";
+   const DCLOUT_weekday_times   =["07:15", "07:45", "08:15", "08:45", "09:15", "09:45", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45", "12:00", "13:15", "13:45", "14:15", "14:45", "15:15", "15:45", "16:20", "16:50", "17:20", "17:50", "18:20", "18:55", "19:15", "19:45", "20:15", "20:45", "21:15", "21:45"];
+   const DCLOUT_weekend_times   =["08:45","09:30","10:00","10:30","11:00","11:45","12:30","13:30","14:15","15:15","16:15","17:15","18:15","19:15","19:45","20:45","21:45"];
+   const WSOUT_weekday_times    =["07:15","08:15","09:15","09:45","10:15","10:45","11:15","11:45","12:00","12:15","12:45","13:05","13:15","13:45","14:05","14:30","14:45","15:15","15:30","16:00","16:15","16:30","16:45","17:00","17:15","17:35","17:45","18:05","18:15","18:35","18:50","19:05","19:35","19:45","20:00","20:20","20:45","21:00","21:25","21:45","22:00","22:20"];
+   const WSOUT_weekend_times    =["10:00","10:45","11:30","12:30","13:15","14:00","14:45","15:30","16:15","17:00","17:45","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00"];
+   const LRSOUT_weekday_times   =["17:05","18:05","19:05","20:00","21:00","22:10"];
+   const LRSOUT_weekend_times   =["13:15","14:30","15:30","16:30","17:30","18:45","20:15","21:20","22:15"];
+   const DCLIN_weekday_times_UDC=["07:40","07:55","08:25","08:40","08:55","09:25","09:40","09:55","10:10","10:25","10:40","10:55","11:10","11:40","12:10","12:25","12:40","13:10","13:25","13:40","14:10","14:25","14:55","15:10","15:40","15:55","16:40","17:10","17:40","18:10","18:40","19:15","19:30","20:00","20:10","20:25","20:45","21:10","21:25","21:50","22:10","22:20","22:40"];
+   const DCLIN_weekend_times_UDC=["10:25","11:10","11:55","12:55","13:40","14:25","15:10","15:55","16:40","17:25","18:10","18:55","19:25","19:55","20:25","20:50","21:20","21:50","22:20"];
+   const DCLIN_weekday_times_LM =["07:43","07:58","08:28","08:43","08:58","09:28","09:43","09:58","10:13","10:28","10:43","10:58","11:13","11:43","12:13","12:28","12:43","13:13","13:28","13:43","14:13","14:28","14:58","15:13","15:43","15:58","16:43","17:13","17:43","18:13","18:43","19:18","19:33","20:03","20:13","20:28","20:48","21:13","21:28","21:53","22:13","22:23","22:43"];
+   const DCLIN_weekend_times_LM =["10:28","11:13","11:58","12:58","13:43","14:28","15:13","15:58","16:43","17:28","18:13","18:58","19:28","19:58","20:28","20:53","21:23","21:53","22:23"];
+   const DCLIN_weekday_times_RC =["07:49","08:04","08:34","08:49","09:04","09:34","09:49","10:04","10:19","10:34","10:49","11:04","11:19","11:49","12:19","12:34","12:49","13:19","13:34","13:49","14:19","14:34","15:04","15:19","15:49","16:04","16:49","17:19","17:49","18:19","18:49","19:24","19:39","20:09","20:19","20:34","20:54","21:19","21:34","21:59","22:19","22:29","22:49"];
+   const DCLIN_weekend_times_RC =["10:34","11:19","12:04","13:04","13:49","14:34","15:19","16:04","16:49","17:34","18:19","19:04","19:34","20:04","20:34","20:59","21:29","21:59","22:29"];
+   const WSIN_weekday_times_UDC =["07:15","07:30","07:35","07:45","08:03","08:15","08:33","08:40","08:55","09:03","09:15","09:33","09:45","10:03","10:15","10:33","10:48","11:03","11:18","11:25","11:33","11:48","12:03","12:18","12:33","12:48","13:03","13:35","14:05","14:35","15:05","15:35","16:05","16:40","17:10","17:40","18:10","18:40","19:15","19:33","20:03","20:33","21:03","21:33","22:03"];
+   const WSIN_weekend_times_UDC =["09:03","09:48","10:18","10:48","11:18","12:03","12:48","13:48","14:33","15:33","16:33","17:33","18:33","19:33","20:03","21:03","22:03"];
+   const WSIN_weekday_times_MM  =["07:18","07:33","07:38","07:48","08:06","08:18","08:36","08:43","08:58","09:06","09:18","09:36","09:48","10:06","10:18","10:36","10:51","11:06","11:21","11:28","11:36","11:51","12:06","12:21","12:36","12:51","13:06","13:38","14:08","14:38","15:08","15:38","16:08","16:43","17:13","17:43","18:13","18:43","19:18","19:36","20:06","20:36","21:06","21:36","22:06"];
+   const WSIN_weekend_times_MM  =["09:06","09:51","10:21","10:51","11:21","12:06","12:51","13:51","14:36","15:36","16:36","17:36","18:36","19:36","20:06","21:06","22:06"];
+   const WSIN_weekday_times_FM  =["07:25","07:40","07:45","07:55","08:13","08:25","08:43","08:50","09:05","09:13","09:25","09:43","09:55","10:13","10:25","10:43","10:58","11:13","11:28","11:35","11:43","11:58","12:13","12:28","12:43","12:58","13:13","13:45","14:15","14:45","15:15","15:45","16:15","16:50","17:20","17:50","18:20","18:50","19:25","19:43","20:13","20:43","21:13","21:43","22:13"];
+   const WSIN_weekend_times_FM  =["09:13","09:58","10:28","10:58","11:28","12:13","12:58","13:58","14:43","15:43","16:43","17:43","18:43","19:43","20:13","21:13","22:13"];
+   const UDCOUT_weekday_times   =["07:00","07:15","07:30","07:40","08:00","08:10","08:30","08:40","08:45","09:00","09:10","09:30","09:40","10:00","10:10","10:30","10:40","11:00","11:15","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30"];
+   const UDCIN_weekday_times    =["07:15","07:30","07:45","07:55","08:15","08:25","08:45","08:55","09:00","09:15","09:25","09:45","09:55","10:15","10:25","10:45","10:55","11:15","11:30","11:45","12:15","12:45","13:15","13:45","14:15","14:45","15:15","15:45","16:15","16:25","16:45","16:55","17:25","18:00","18:30","19:00"];
+   //UDC doesn't run on weekends...
+   const LRSIN_weekday_times_PS =["17:12","18:12","19:12","20:07","21:07","22:17"];
+   const LRSIN_weekend_times_PS =["13:22","14:37","15:37","16:37","17:37","18:52","20:22","21:27","22:22"];
+   const LRSIN_weekend_times_FM =["13:27","14:42","15:42","16:42","17:42","18:57","20:27","21:32","22:27"];
+   const LRSIN_weekday_times_FM =["17:15","18:15","19:15","20:10","21:10","22:20"];
+   const LRSIN_weekend_times_LM =["13:33","14:48","15:48","16:48","17:48","19:03","20:33","21:38","22:33"];
+   const LRSIN_weekday_times_LM =["17:23","18:23","19:23","20:18","21:18","22:28"];//how the fuck do i do this without it being a pain in the ass
+   const DCL_stops=["UDC","Leroy and Murray","Riverside and Columbus"];
+   const WS_stops=["UDC","Main and Murray","Floral and Main"];
+   const LRS_stops=["Pharmacy School","Main and Floral","Leroy and Murray"];
+   let current = new Date();
+   let in_or_out = '';
+   let line='';
+   let stop='';
+   let list_of_times=[];
+   let list_of_stops=[];
+   let next_list_of_times=[];
+   let use_weekend_times_now=false;
+   let use_weekend_times_later=false;
+   //document.getElementById("time_one").innerText="current";
+   function Beginning(){
+       document.getElementById("beginning").style.display="";
+       document.getElementById("choose_line").style.display="none";
+       document.getElementById("choose_stop").style.display="none";
+       document.getElementById("timing").style.display="none";
+       in_or_out='';
+       line='';
+       stop='';
+       list_of_times=[];
+       next_list_of_times=[];
+       use_weekend_times_now=false;
+       use_weekend_times_later=false;
+   }
+   function ChooseLine(choice){
+       document.getElementById("beginning").style.display="none";
+       document.getElementById("choose_line").style.display="";
+       document.getElementById("choose_stop").style.display="none";
+       document.getElementById("timing").style.display="none";
+       in_or_out=choice;
+       if(in_or_out==='out'){
+           document.getElementById("linebutton1").setAttribute("onclick","Start('DCL')");
+           document.getElementById("linebutton2").setAttribute("onclick","Start('WS')");
+           document.getElementById("linebutton3").setAttribute("onclick","Start('LRS')");
+           document.getElementById("linebutton4").setAttribute("onclick","Start('UDC')");
+       }
+       else{
+           document.getElementById("linebutton1").setAttribute("onclick","ChooseStop('DCL')");
+           document.getElementById("linebutton2").setAttribute("onclick","ChooseStop('WS')");
+           document.getElementById("linebutton3").setAttribute("onclick","ChooseStop('LRS')");
+       }
+   }
+   function ChooseStop(choice){
+       line=choice;
+       document.getElementById("beginning").style.display="none";
+       document.getElementById("choose_line").style.display="none";
+       document.getElementById("choose_stop").style.display="";
+       document.getElementById("timing").style.display="none";
+
+       if(line==='DCL'){
+           list_of_stops=DCL_stops;
+       }
+       else if(line==='WS'){
+           list_of_stops=WS_stops;
+       }
+       else if(line==='LRS'){
+           list_of_stops=LRS_stops;
+       }
+       document.getElementById("stopbutton1").title=list_of_stops[0]; //yuh....
+       document.getElementById("stopbutton2").title=list_of_stops[1];
+       document.getElementById("stopbutton3").title=list_of_stops[2];
+
+   }
+   function Start(choice) {
+       if(line===''){
+           line=choice;
+       }
+       else{
+           stop=choice;
+       }
+       document.getElementById("beginning").style.display="none";
+       document.getElementById("choose_line").style.display="none";
+       document.getElementById("choose_stop").style.display="none";
+       document.getElementById("timing").style.display="";
+       let page_title;
+       let top_notif="";
+       current = new Date();
+       let day_of_week = current.getDay();
+       if(day_of_week===0||day_of_week===6){
+           use_weekend_times_now=true;
+       }
+       if(day_of_week>4){
+           use_weekend_times_later=true;
+       }
+       if(in_or_out==='out'){
+           if(line==='DCL'){
+               page_title="DCL OUT"
+               list_of_times=(use_weekend_times_now ? DCLOUT_weekend_times : DCLOUT_weekday_times);
+               next_list_of_times=(use_weekend_times_later ? DCLOUT_weekend_times : DCLOUT_weekday_times);
+           }
+           else if(line==='WS'){
+               page_title="WS OUT"
+               list_of_times=(use_weekend_times_now ? WSOUT_weekend_times : WSOUT_weekday_times);
+               next_list_of_times=(use_weekend_times_later ? WSOUT_weekend_times : WSOUT_weekday_times);
+           }
+           else if(line==='LRS'){
+               page_title="LRS OUT";
+               list_of_times=(use_weekend_times_now ? LRSOUT_weekend_times : LRSOUT_weekday_times);
+               next_list_of_times=(use_weekend_times_later ? LRSOUT_weekend_times : LRSOUT_weekday_times);
+           }
+           else{
+               page_title="UDC Shuttle"
+               list_of_times=(use_weekend_times_now ? [] : UDCOUT_weekday_times);
+               next_list_of_times=(use_weekend_times_later ? [] : UDCOUT_weekday_times);
+               //do something about this
+           }
+           top_notif="The next bus leaves from the Union at";
+       }
+       else{
+           if(stop==='0'||stop===''){
+               top_notif+="The next bus leaves from "
+           }
+           else{
+               top_notif+="The next bus passes "
+           }
+           if(line==='DCL'){
+               top_notif+=DCL_stops[parseInt(stop)]+" at";
+               page_title="DCL IN - "+DCL_stops[parseInt(stop)];
+               if(stop==='0'){
+                   list_of_times=(use_weekend_times_now ? DCLIN_weekend_times_UDC : DCLIN_weekday_times_UDC);
+                   next_list_of_times=(use_weekend_times_later ? DCLIN_weekend_times_UDC : DCLIN_weekday_times_UDC);
+               }
+               else if(stop==='1'){
+                   list_of_times=(use_weekend_times_now ? DCLIN_weekend_times_LM : DCLIN_weekday_times_LM);
+                   next_list_of_times=(use_weekend_times_later ? DCLIN_weekend_times_LM : DCLIN_weekday_times_LM);
+               }
+               else{
+                   list_of_times=(use_weekend_times_now ? DCLIN_weekend_times_RC : DCLIN_weekday_times_RC);
+                   next_list_of_times=(use_weekend_times_later ? DCLIN_weekend_times_RC : DCLIN_weekday_times_RC);
+               }
+           }
+           else if(line==='WS'){
+               top_notif+=WS_stops[parseInt(stop)]+" at";
+               page_title="WS IN - "+WS_stops[parseInt(stop)];
+               if(stop==='0'){
+                   list_of_times=(use_weekend_times_now ? WSIN_weekend_times_UDC : WSIN_weekday_times_UDC);
+                   next_list_of_times=(use_weekend_times_later ? WSIN_weekend_times_UDC : WSIN_weekday_times_UDC);
+               }
+               else if(stop==='1'){
+                   list_of_times=(use_weekend_times_now ? WSIN_weekend_times_MM : WSIN_weekday_times_MM);
+                   next_list_of_times=(use_weekend_times_later ? WSIN_weekend_times_MM : WSIN_weekday_times_MM);
+               }
+               else{
+                   list_of_times=(use_weekend_times_now ? WSIN_weekend_times_FM : WSIN_weekday_times_FM);
+                   next_list_of_times=(use_weekend_times_later ? WSIN_weekend_times_FM : WSIN_weekday_times_FM);
+               }
+           }
+           else if(line==='LRS'){
+               top_notif+=LRS_stops[parseInt(stop)]+" at";
+               page_title="LRS - "+LRS_stops[parseInt(stop)];
+               switch (stop){
+                   case '0':
+                       list_of_times=(use_weekend_times_now ? LRSIN_weekend_times_PS : LRSIN_weekday_times_PS);
+                       next_list_of_times=(use_weekend_times_later ? LRSIN_weekend_times_PS : LRSIN_weekday_times_PS);
+                       //also do something about this
+                       break;
+                   case '1':
+                       list_of_times=(use_weekend_times_now ? LRSIN_weekend_times_FM : LRSIN_weekday_times_FM);
+                       next_list_of_times=(use_weekend_times_later ? LRSIN_weekend_times_FM : LRSIN_weekday_times_FM);
+                       break;
+                   default:
+                       list_of_times=(use_weekend_times_now ? LRSIN_weekend_times_LM : LRSIN_weekday_times_LM);
+                       next_list_of_times=(use_weekend_times_later ? LRSIN_weekend_times_LM : LRSIN_weekday_times_LM);
+               }
+           }
+           else{
+               top_notif+="UDC at";
+               page_title="UDC Shuttle";
+               list_of_times=(use_weekend_times_now ? [] : UDCIN_weekday_times);
+               next_list_of_times=(use_weekend_times_later ? []: UDCIN_weekday_times);
+           }
+       }
+       document.getElementById("desc_choice").innerText=page_title;
+       document.getElementById("notif_one").innerText=top_notif;
+       if(page_title.length>15&&document.documentElement.clientWidth<700){//graphic design is not my passion
+           document.getElementById("desc_choice").style.fontSize="23px";
+       }
+       else{
+           document.getElementById("desc_choice").style.fontSize="30px";
+       }
+       checkTime();
+       let the_timer = setInterval(checkTime, 5000); //look into how resource intensive it is (and which resources?)
+   }
+
+   function checkTime(){
+       current = new Date();
+       let i = 0;
+       let time1;
+       let time2;
+       let found_time=false;
+       if(line==='UDC'&&use_weekend_times_now){
+           document.getElementById("notif_one").innerText="This line doesn't run on the weekends.";
+       }
+       else {
+           if(line==='LRS'&&use_weekend_times_now&&stop==='0'){
+               document.getElementById("good_night").innerText="This isn't actually on the schedule, I'm just postulating. It says it goes to the pharmacy school though.";
+           }
+           for (i; i < list_of_times.length; i++) {
+               time1 = list_of_times[i];
+               time2 = current.getHours().toString() + ":" + current.getMinutes().toString();
+               if (time2[1] === ":") {
+                   time2 = "0" + time2;
+               }
+               if (time2.length < 5) {
+                   time2 = time2.substring(0, 3) + "0" + time2.substring(3)
+               }
+               let time_left = 0;
+               if (compareTimes(time1, time2)) {
+                   found_time = true;
+                   document.getElementById("time_one").innerText = convertTo12HrTime(list_of_times[i]);
+                   time_left = calculateDifferenceMinutes(time1, time2);
+                   document.getElementById("in_minutes").innerText = "which is in " + time_left + (time_left !== 1 ? " minutes" : " minute");
+                   if (i === list_of_times.length - 1) {
+                       if(line==='UDC'&&use_weekend_times_later){
+                           document.getElementById("notif_two").innerText = "This line doesn't run on the weekends.";
+                           document.getElementById("time_two").innerText = "";
+                       }
+                       else {
+                           document.getElementById("notif_two").innerText = "After that, you'll have to wait until the morning at";
+                           document.getElementById("time_two").innerText = convertTo12HrTime(next_list_of_times[0]);
+                       }
+                   } else {
+                       document.getElementById("notif_two").innerText = "The next one after that is at";
+                       document.getElementById("time_two").innerText = convertTo12HrTime(list_of_times[i + 1]); //potential error fixed?
+                   }
+                   break;
+               }
+           }
+       }
+       if(!found_time){
+           if(line==='UDC'&&use_weekend_times_later){
+               document.getElementById("notif_one").innerText = "The last bus is gone. This line doesn't run on the weekends.";
+               document.getElementById("time_one").innerText = "";
+               document.getElementById("in_minutes").innerText = "";
+               document.getElementById("notif_two").innerText="Come back Monday morning at"
+               document.getElementById("time_two").innerText=convertTo12HrTime(list_of_times[0]);
+           }
+           else {
+               document.getElementById("notif_one").innerText = "You'll have to wait until the morning at"
+               document.getElementById("time_one").innerText = convertTo12HrTime(next_list_of_times[0]);
+               document.getElementById("in_minutes").innerText="";
+               document.getElementById("notif_two").innerText="";
+               document.getElementById("time_two").innerText="";
+           }
+           document.getElementById("good_night").innerText = "Good night!";
+       }
+       else{
+           document.getElementById("good_night").innerText = "";
+       }
+   }
+   function convertTo12HrTime(time){
+       if(parseInt(time.substring(0,2),10)>=12){
+           return (parseInt(time.substring(0,2),10)-12).toString()+time.substring(2,5)+" PM";
+       }
+       return time+" AM"
+   }
+   function compareTimes(time_one,time_two){//strings. returns true if time1 is larger or equal
+       if(parseInt(time_one.substring(0,2),10)>parseInt(time_two.substring(0,2),10)){
+           return true;
+       }
+       else if(parseInt(time_one.substring(0,2),10)===parseInt(time_two.substring(0,2),10)){
+           return parseInt(time_one.substring(3, 5), 10) >= parseInt(time_two.substring(3, 5), 10);
+       }
+       return false;
+
+
+   }
+   function calculateDifferenceMinutes(time_one, time_two){ //assumes time 1 is larger than time 2
+       let hours= parseInt(time_one.substring(0,2),10)-parseInt(time_two.substring(0,2),10);
+       let minutes=parseInt(time_one.substring(3,5),10)-parseInt(time_two.substring(3,5),10);
+       return hours*60+minutes;
+
+   }
+</script>
+</html>
